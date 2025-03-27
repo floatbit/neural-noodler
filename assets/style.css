@@ -1,0 +1,330 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background-color: #f0f2f5;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+/* Create a wrapper for mindmap and content panel */
+.content-wrapper {
+    display: flex;
+    flex: 1;
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Sidebar header styles */
+.sidebar-header {
+    text-align: center;
+    padding: 10px 0 15px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.sidebar-header h1 {
+    color: #2c3e50;
+    margin-bottom: 5px;
+    font-size: 22px;
+}
+
+.sidebar-header p {
+    color: #7f8c8d;
+    font-size: 14px;
+    font-style: italic;
+}
+
+.input-container {
+    padding: 15px;
+    border-bottom: 1px solid #eee;
+    margin-bottom: 20px;
+}
+
+.topic-input {
+    width: 100%;
+    padding: 12px;
+    font-size: 14px;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.topic-input:focus {
+    border-color: #3498db;
+}
+
+.submit-btn {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+}
+
+.submit-btn:hover {
+    background-color: #2980b9;
+}
+
+#mindmap-container {
+    flex: 1;
+    height: 100vh;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    position: relative;
+    width: calc(100% - 350px);
+}
+
+/* Ensure the vis network container takes the full size of its parent */
+.vis-network {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* Ensure the canvas inside the network container takes the full size */
+.vis-network canvas {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+.content-panel {
+    position: relative;
+    width: 350px;
+    height: 100vh;
+    background-color: white;
+    border-left: 1px solid #ddd;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.2);
+    flex-shrink: 0;
+}
+
+/* Remove any transforms since we want the panel always visible */
+.content-panel.active {
+    /* No transform needed, panel is always visible */
+}
+
+.panel-indicator {
+    margin-top: 20px;
+    padding: 10px;
+    text-align: center;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    font-style: italic;
+    color: #7f8c8d;
+}
+
+/* Content section styling */
+.content-section {
+    margin-bottom: 25px;
+    padding-bottom: 10px;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Loading section styles */
+.loading-section {
+    opacity: 0.8;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.loading-text {
+    color: #34495e;
+    font-size: 15px;
+    line-height: 1.6;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.loading-text p {
+    margin-bottom: 15px;
+    opacity: 0.7;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.loading-text p::after {
+    content: '';
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border: 2px solid #3498db;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: spin 1s linear infinite;
+    margin-left: 4px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.content-separator {
+    height: 1px;
+    background-color: #eee;
+    margin: 15px 0;
+}
+
+.content-title {
+    margin-top: 0;
+    margin-bottom: 15px;
+    color: #3498db;
+    font-size: 20px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.content-text {
+    line-height: 1.6;
+    color: #34495e;
+    font-size: 15px;
+    white-space: pre-wrap;
+    margin-bottom: 10px;
+}
+
+.content-text p {
+    margin-bottom: 15px;
+}
+
+.content-text p:last-child {
+    margin-bottom: 0;
+}
+
+/* Initial content text properties */
+#content-text {
+    max-height: none;
+    overflow: visible;
+}
+
+.close-panel {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #7f8c8d;
+    z-index: 1001;
+    display: none; /* Hide the close button as we want the panel always visible */
+}
+
+.loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: #3498db;
+    font-size: 18px;
+}
+
+/* Customize node styling */
+.vis-network .vis-node {
+    border-radius: 50%;
+    border: 2px solid #3498db;
+    background-color: white;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+}
+
+.vis-network .vis-node.main-topic {
+    background-color: #3498db;
+    color: white;
+}
+
+/* Legend styles */
+.legend {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: white;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    z-index: 500;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.legend-color {
+    display: inline-block;
+    width: 15px;
+    height: 15px;
+    margin-right: 8px;
+    border-radius: 3px;
+}
+
+.legend-label {
+    font-size: 12px;
+    color: #666;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+.initial-content .content-title {
+    font-size: 20px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    color: #2c3e50;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 10px;
+}
+
+.initial-content {
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.initial-content .content-text {
+    color: #555;
+    line-height: 1.5;
+} 

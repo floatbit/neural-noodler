@@ -1,0 +1,50 @@
+# PHP
+/vendor/
+composer.lock
+.env
+*.log
+
+# macOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+
+# IDE and editor files
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.project
+.settings/
+.buildpath
+
+# Temporary files
+*.tmp
+*.temp
+*.cache
+/temp/
+/tmp/
+
+# Dependency directories
+/node_modules/
+/bower_components/
+
+# Build and dist directories
+/dist/
+/build/
+/public/hot/
+
+# API Keys and sensitive data
+config.php
+*.pem
+*.key 
