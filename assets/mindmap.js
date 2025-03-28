@@ -578,6 +578,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to expand a node with subtopics
     function expandNode(node, subtopics, parentTopic, contextPath, isAdditional = false) {
+        if (!subtopics || subtopics.length === 0) {
+            return;
+        }
+        
         // Mark the node as expanded if it's the first expansion
         if (!isAdditional) {
             nodes.update({
@@ -850,6 +854,25 @@ document.addEventListener('DOMContentLoaded', function() {
                     },
                     scale: 0.8  // Maintain consistent zoom level
                 });
+                
+                // Center on the parent node after physics has settled
+                setTimeout(() => {
+                    // Get the node position
+                    const nodePosition = network.getPositions([node.id])[node.id];
+                    
+                    // Move to center on this node
+                    network.moveTo({
+                        position: {
+                            x: nodePosition.x,
+                            y: nodePosition.y
+                        },
+                        scale: 0.8,
+                        animation: {
+                            duration: 800,
+                            easingFunction: 'easeOutCubic'
+                        }
+                    });
+                }, 1200);
                 
                 // Keep gentle physics
                 setTimeout(() => {
